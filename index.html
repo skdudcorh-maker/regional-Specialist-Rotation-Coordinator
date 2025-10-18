@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로컬 전문의 순환 진료 코디네이터 | 대전에서 서울급 전문 진료를</title>
+    <style>
+        /* ========== 기본 설정 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ========== 히어로 섹션 ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            max-width: 900px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 18px 45px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .cta-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* ========== 공통 섹션 스타일 ========== */
+        section {
+            padding: 80px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .section-title span {
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        /* ========== 문제 제시 섹션 ========== */
+        .problem {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .problem-card-emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .problem-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .problem-card p {
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .problem-stat {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* ========== 솔루션 섹션 ========== */
+        .solution {
+            background: white;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .solution-card-emoji {
+            font-size: 4em;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .solution-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .solution-card p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        /* ========== 서비스 섹션 ========== */
+        .services {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .service-emoji {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .service-card p {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .service-detail-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .service-detail-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        /* ========== 모달 스타일 ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 50px;
+            border-radius: 25px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideDown 0.4s ease;
+            position: relative;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+            color: #764ba2;
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        .modal-content h3 {
+            color: #2d3748;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .modal-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .modal-content ul li {
+            padding: 10px 0;
+            color: #4a5568;
+            font-size: 1.05em;
+        }
+
+        .modal-content ul li::before {
+            content: '✓ ';
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .modal-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-info p {
+            margin: 8px 0;
+            font-size: 1.05em;
+        }
+
+        /* ========== 작동 방식 섹션 ========== */
+        .how-it-works {
+            background: white;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .step p {
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        /* ========== 특장점 섹션 ========== */
+        .features {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-8px);
+        }
+
+        .feature-card:hover h3,
+        .feature-card:hover p {
+            color: white;
+        }
+
+        .feature-emoji {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #2d3748;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        /* ========== 가격 섹션 ========== */
+        .pricing {
+            background: white;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured h3,
+        .pricing-card.featured .price,
+        .pricing-card.featured ul li {
+            color: white;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .pricing-emoji {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .pricing-card ul li {
+            padding: 12px 0;
+            color: #4a5568;
+            font-size: 1.05em;
+        }
+
+        .pricing-card ul li::before {
+            content: '✓ ';
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .pricing-card.featured ul li::before {
+            color: white;
+        }
+
+        .pricing-btn {
+            background: #667eea;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured .pricing-btn {
+            background: white;
+            color: #667eea;
+        }
+
+        .pricing-card.featured .pricing-btn:hover {
+            background: rgba(255,255,255,0.9);
+        }
+
+        /* ========== FAQ 섹션 ========== */
+        .faq {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .faq-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2d3748;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: #f7fafc;
+        }
+
+        .faq-question::after {
+            content: '▼';
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 30px;
+        }
+
+        .faq-answer.active {
+            max-height: 500px;
+            padding: 0 30px 25px 30px;
+        }
+
+        .faq-answer p {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        /* ========== 최종 CTA 섹션 ========== */
+        .final-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 2.8em;
+            margin-bottom: 25px;
+        }
+
+        .final-cta p {
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .final-cta-emoji {
+            font-size: 4em;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ========== 푸터 ========== */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .footer h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .footer p {
+            margin: 10px 0;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            margin: 25px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #667eea;
+            transform: scale(1.2);
+        }
+
+        .back-to-top {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            margin: 30px auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: #764ba2;
+            transform: translateY(-5px);
+        }
+
+        /* ========== 반응형 디자인 ========== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                margin: 10% 20px;
+                padding: 30px;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+
+        /* ========== 스크롤 애니메이션 ========== */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-animate.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== 히어로 섹션 ========== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-emoji">🏥 💼 🤝</div>
+            <h1>로컬 전문의 순환 진료 코디네이터</h1>
+            <p>대전에서도 서울급 전문 진료를! 전문의 순환 진료를 통해<br>지역 환자에게 고수준 의료 서비스를 연결합니다</p>
+            <div class="cta-buttons">
+                <a href="#services" class="cta-button cta-primary">서비스 소개 보기</a>
+                <a href="https://forms.gle/YOUR_FORM_LINK" target="_blank" class="cta-button cta-secondary">무료 상담 신청</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 문제 제시 섹션 ========== -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title scroll-animate">왜 로컬 전문의 순환 진료 코디네이터가 필요한가요? 🤔</h2>
+            <div class="problem-grid">
+                <div class="problem-card scroll-animate">
+                    <div class="problem-card-emoji">🚗</div>
+                    <h3>비효율적인 시간과 비용</h3>
+                    <p>서울까지 왕복 4시간, 교통비와 숙박비까지 더해지면 한 번의 진료에 수십만 원이 소요됩니다. 시간과 금전적 부담이 너무 큽니다.</p>
+                    <span class="problem-stat">평균 왕복 비용 30만원+</span>
+                </div>
+                <div class="problem-card scroll-animate">
+                    <div class="problem-card-emoji">😰</div>
+                    <h3>지역 병원에 대한 불신</h3>
+                    <p>지역 대학병원이 있어도 "서울 병원이 더 낫다"는 인식으로 인해 많은 환자들이 멀리까지 이동하며 고생하고 있습니다.</p>
+                    <span class="problem-stat">지역 의료 이탈률 증가</span>
+                </div>
+                <div class="problem-card scroll-animate">
+                    <div class="problem-card-emoji">📋</div>
+                    <h3>복잡한 진료 예약 과정</h3>
+                    <p>어느 병원, 어느 전문의에게 가야 할지 정보가 부족하고, 예약부터 진료까지의 과정이 복잡하여 환자와 보호자가 혼란을 겪습니다.</p>
+                </div>
+                <div class="problem-card scroll-animate">
+                    <div class="problem-card-emoji">⏰</div>
+                    <h3>진료 기회의 불평등</h3>
+                    <p>지역 거주자들은 고도화된 전문 진료를 받기 위해 장시간 이동해야 하는 반면, 수도권 환자들은 쉽게 접근 가능한 불평등이 존재합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 솔루션 섹션 ========== -->
+    <section class="solution">
+        <div class="container">
+            <h2 class="section-title scroll-animate">로컬 전문의 순환 진료 코디네이터의 해결책 💡</h2>
+            <div class="solution-grid">
+                <div class="solution-card scroll-animate">
+                    <span class="solution-card-emoji">🔄</span>
+                    <h3>전문의 순환 진료 기획</h3>
+                    <p>서울의 우수한 전문의들이 대전 지역으로 정기적으로 순환 진료(팝업 진료)를 올 수 있도록 기획하고 운영을 대행합니다. 환자는 지역에서 서울급 전문의를 만날 수 있습니다.</p>
+                </div>
+                <div class="solution-card scroll-animate">
+                    <span class="solution-card-emoji">🎯</span>
+                    <h3>맞춤형 진료 코디네이션</h3>
+                    <p>환자의 상태와 필요에 따라 최적의 전문의를 매칭하고, 예약부터 진료 후 관리까지 전 과정을 코디네이션하여 신뢰도 높은 의료 서비스를 제공합니다.</p>
+                </div>
+                <div class="solution-card scroll-animate">
+                    <span class="solution-card-emoji">📊</span>
+                    <h3>행정 서비스 원스톱 지원</h3>
+                    <p>진료 예약, 의료 기록 관리, 보험 처리 등 복잡한 행정 업무를 대행하여 환자와 보호자의 부담을 최소화하고 진료에만 집중할 수 있도록 돕습니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 서비스 섹션 ========== -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title scroll-animate">제공 서비스 ✨</h2>
+            <div class="services-grid">
+                <div class="service-card scroll-animate">
+                    <div class="service-emoji">🩺</div>
+                    <h3>전문의 매칭 서비스</h3>
+                    <p>환자의 증상과 질환에 맞는 최적의 전문의를 선별하고 매칭해드립니다.</p>
+                    <button class="service-detail-btn" onclick="openModal('modal1')">자세히 보기</button>
+                </div>
+                <div class="service-card scroll-animate">
+                    <div class="service-emoji">📅</div>
+                    <h3>순환 진료 일정 관리</h3>
+                    <p>전문의의 지역 방문 일정을 관리하고 환자에게 최적의 진료 시간을 안내합니다.</p>
+                    <button class="service-detail-btn" onclick="openModal('modal2')">자세히 보기</button>
+                </div>
+                <div class="service-card scroll-animate">
+                    <div class="service-emoji">📋</div>
+                    <h3>의료 기록 통합 관리</h3>
+                    <p>다양한 병원의 의료 기록을 통합 관리하여 진료의 연속성을 보장합니다.</p>
+                    <button class="service-detail-btn" onclick="openModal('modal3')">자세히 보기</button>
+                </div>
+                <div class="service-card scroll-animate">
+                    <div class="service-emoji">🤝</div>
+                    <h3>진료 예약
